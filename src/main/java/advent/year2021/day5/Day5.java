@@ -1,10 +1,10 @@
 package advent.year2021.day5;
 
 import advent.AdventConstants;
-import advent.AdventOfCodeBaseTemplate;
+import advent.AdventOfCodeRunner;
+import advent.AdventOfCodeSolver;
+import advent.year2021.day4.Day4;
 
-import java.time.MonthDay;
-import java.time.Year;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
@@ -15,14 +15,10 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-public class Day5 extends AdventOfCodeBaseTemplate {
-
-    public Day5(Year year, MonthDay day) {
-        super(year, day);
-    }
+public class Day5 extends AdventOfCodeSolver {
 
     @Override
-    public Optional<String> answerForPart1() {
+    public Optional<String> solvePart1() {
         Stream<LineSegment> lineSegments = asStream().map(this::parseAsLineSegment).filter(LineSegment::isHorizontalOrVertical);
         Map<Point, Long> pointFrequency = lineSegments.flatMap(LineSegment::asPoints)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
@@ -31,7 +27,7 @@ public class Day5 extends AdventOfCodeBaseTemplate {
     }
 
     @Override
-    public Optional<String> answerForPart2() {
+    public Optional<String> solvePart2() {
         Stream<LineSegment> lineSegments = asStream().map(this::parseAsLineSegment);
         Map<Point, Long> pointFrequency = lineSegments.flatMap(LineSegment::asPoints)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
@@ -96,7 +92,8 @@ public class Day5 extends AdventOfCodeBaseTemplate {
     }
 
     public static void main(String[] args) {
-        var solver = new Day5(AdventConstants.YEAR_2021, AdventConstants.DAY5);
-        solver.run();
+        var runner = AdventOfCodeRunner.getRunner(AdventConstants.YEAR_2021, AdventConstants.DAY4);
+        var solver = new Day4();
+        runner.solve(solver);
     }
 }

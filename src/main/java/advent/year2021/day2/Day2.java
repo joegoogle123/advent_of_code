@@ -1,23 +1,18 @@
 package advent.year2021.day2;
 
 import advent.AdventConstants;
-import advent.AdventOfCodeBaseTemplate;
+import advent.AdventOfCodeRunner;
+import advent.AdventOfCodeSolver;
 import advent.StreamUtils;
 
-import java.time.MonthDay;
-import java.time.Year;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
-public class Day2 extends AdventOfCodeBaseTemplate {
-
-    public Day2(Year year, MonthDay day) {
-        super(year, day);
-    }
+public class Day2 extends AdventOfCodeSolver {
 
     @Override
-    public Optional<String> answerForPart1() {
+    public Optional<String> solvePart1() {
         Stream<SubmarineEvent> submarineDirectionalEvents = asStream().map(this::toEvent);
         SubmarineEventHandler eventHandler = new PositionUpdateEventHandler();
         var finalState = submarineDirectionalEvents.reduce(SubmarineState.ZERO, stateAccumalator(eventHandler), StreamUtils.throwingBinaryOperator());
@@ -25,7 +20,7 @@ public class Day2 extends AdventOfCodeBaseTemplate {
     }
 
     @Override
-    public Optional<String> answerForPart2() {
+    public Optional<String> solvePart2() {
         Stream<SubmarineEvent> submarineDirectionalEvents = asStream().map(this::toEvent);
         SubmarineEventHandler eventHandler = new PositionAndAimUpdateEventHandler();
         var finalState = submarineDirectionalEvents.reduce(SubmarineState.ZERO, stateAccumalator(eventHandler), StreamUtils.throwingBinaryOperator());
@@ -99,8 +94,9 @@ public class Day2 extends AdventOfCodeBaseTemplate {
     }
 
     public static void main(String[] args) {
-        var day2 = new Day2(AdventConstants.YEAR_2021, AdventConstants.DAY2);
-        day2.run();
+        var runner = AdventOfCodeRunner.getRunner(AdventConstants.YEAR_2021, AdventConstants.DAY2);
+        var solver = new Day2();
+        runner.solve(solver);
     }
 
 

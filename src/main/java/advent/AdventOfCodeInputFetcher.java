@@ -11,13 +11,10 @@ import java.time.Year;
 
 public class AdventOfCodeInputFetcher {
 
-    public final HttpClient httpClient;
-
-    private static final String SESSION_ID = "53616c7465645f5f3fe3774708fa37b8f292f8e1b45dd6332230b6c3d3f5e1aa900ced62c87bb3772811f4052718ce5a";
-
     private static final String DOWNLOAD_LINK = "https://adventofcode.com/%d/day/%d/input";
-
     private static final Path resourcePath = Paths.get("src","main","resources");
+
+    public final HttpClient httpClient;
     private final SessionId sessionId;
 
 
@@ -27,6 +24,7 @@ public class AdventOfCodeInputFetcher {
     }
 
     public Path fetchInput(Year year, MonthDay day)  {
+        System.out.println("Fetching input...");
         var resolvedUri = createLink(year, day);
         var destinationPath = createFilePath(year, day);
         // make year directory if not existing
@@ -61,7 +59,7 @@ public class AdventOfCodeInputFetcher {
 
     private HttpRequest createRequest(URI downloadLink) {
         return HttpRequest.newBuilder(downloadLink)
-                .header("cookie","session=%s".formatted(SESSION_ID))
+                .header("cookie","session=%s".formatted(sessionId.session()))
                 .GET().build();
     }
 
@@ -70,5 +68,4 @@ public class AdventOfCodeInputFetcher {
         var httpRequest = createRequest(downloadURI);
         return httpClient.send(httpRequest, downloadHandler);
     }
-
 }

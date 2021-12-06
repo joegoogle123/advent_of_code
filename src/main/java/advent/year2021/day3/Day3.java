@@ -1,25 +1,20 @@
 package advent.year2021.day3;
 
 import advent.AdventConstants;
-import advent.AdventOfCodeBaseTemplate;
+import advent.AdventOfCodeRunner;
+import advent.AdventOfCodeSolver;
 import advent.StreamUtils;
 
-import java.time.MonthDay;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.ToIntFunction;
 
-public class Day3 extends AdventOfCodeBaseTemplate {
-
-    public Day3(Year year, MonthDay day) {
-        super(year, day);
-    }
+public class Day3 extends AdventOfCodeSolver {
 
     @Override
-    public Optional<String> answerForPart1() {
+    public Optional<String> solvePart1() {
 
         List<BitNumber> bitNumbers = asStream().map(Day3::toBitNumber).toList();
         var positions = bitNumbers.iterator().next().maxPosition;
@@ -36,7 +31,7 @@ public class Day3 extends AdventOfCodeBaseTemplate {
     }
 
     @Override
-    public Optional<String> answerForPart2() {
+    public Optional<String> solvePart2() {
         List<BitNumber> bitNumbers = asStream().map(Day3::toBitNumber).toList();
 
         long oxygenRating = computeRating(new LinkedList<>(bitNumbers), frequency -> frequency.mostCommon(1));
@@ -132,7 +127,8 @@ public class Day3 extends AdventOfCodeBaseTemplate {
     }
 
     public static void main(String[] args) {
-        var solver = new Day3(AdventConstants.YEAR_2021, AdventConstants.DAY3);
-        solver.run();
+        var runner = AdventOfCodeRunner.getRunner(AdventConstants.YEAR_2021, AdventConstants.DAY3);
+        var solver = new Day3();
+        runner.solve(solver);
     }
 }

@@ -1,30 +1,25 @@
 package advent.year2021.day4;
 
 import advent.AdventConstants;
-import advent.AdventOfCodeBaseTemplate;
+import advent.AdventOfCodeRunner;
+import advent.AdventOfCodeSolver;
 
-import java.time.MonthDay;
-import java.time.Year;
 import java.util.*;
 
-public class Day4 extends AdventOfCodeBaseTemplate {
+public class Day4 extends AdventOfCodeSolver {
 
     private List<BingoBoard> bingoBoards;
     private int[] bingoNumbers;
 
-    public Day4(Year year, MonthDay day) {
-        super(year, day);
-    }
-
     @Override
-    public Optional<String> answerForPart1() {
+    public Optional<String> solvePart1() {
         loadBingoBoard();
         var score = findFirstBingoWinningScore();
         return fromNumber(score);
     }
 
     @Override
-    public Optional<String> answerForPart2() {
+    public Optional<String> solvePart2() {
         loadBingoBoard();
         var score = findLastBingoWinningScore();
         return fromNumber(score);
@@ -137,7 +132,7 @@ public class Day4 extends AdventOfCodeBaseTemplate {
             }
         }
 
-        private BingoBoard(int[][] board) {
+        BingoBoard(int[][] board) {
             this.bingoElementMap = new HashMap<>();
             this.board = board;
             this.markedBoard = new boolean[SIZE][SIZE];
@@ -184,8 +179,9 @@ public class Day4 extends AdventOfCodeBaseTemplate {
     }
 
     public static void main(String[] args) {
-        var solver = new Day4(AdventConstants.YEAR_2021, AdventConstants.DAY4);
-        solver.run();
+        var runner = AdventOfCodeRunner.getRunner(AdventConstants.YEAR_2021, AdventConstants.DAY4);
+        var solver = new Day4();
+        runner.solve(solver);
     }
 
 }
