@@ -76,8 +76,8 @@ public abstract class AdventOfCodeSolver {
         var part2 = time(this::solvePart2);
 
         part2.getKey().ifPresent(answer -> {
-            System.out.printf("Solution to part 2:%n%s\n", answer);
-            System.out.println("Measured time %d (ms)".formatted(part1.getValue().toMillis()));
+            System.out.printf("Solution to part 2:%n%s%n", answer);
+            System.out.printf("Measured time %d (ms)%n", part2.getValue().toMillis());
         });
     }
 
