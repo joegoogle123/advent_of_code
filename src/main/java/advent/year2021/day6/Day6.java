@@ -5,58 +5,52 @@ import advent.AdventOfCodeRunner;
 import advent.AdventOfCodeSolver;
 
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class Day6 extends AdventOfCodeSolver {
 
-
-    private static final Integer NEW_FISH = 8;
-    private static final Integer RESET_FISH = 6;
-    private static final Integer ZERO = 0;
+    private List<Integer> initialReproductionSchedule;
 
     @Override
     public Optional<String> solvePart1() {
-        LinkedList<Integer> fishes = Arrays.stream(asList().iterator().next().split(",")).map(Integer::valueOf).collect(Collectors.toCollection(() -> new LinkedList<>()));
-        var iter = 0;
-        while (iter++ < 80) {
-            ListIterator<Integer> listIterator = fishes.listIterator();
-            int newFishCount = 0;
-            while (listIterator.hasNext()) {
-                var next = listIterator.next();
-                if (next.equals(ZERO)) {
-                    newFishCount++;
-                    listIterator.set(RESET_FISH);
-                } else {
-                    listIterator.set(next - 1);
-                }
-            }
-
-            for (int i = 0; i < newFishCount; i++) {
-                fishes.add(NEW_FISH);
-            }
-        }
-
-        return fromNumber(fishes.size());
+        long population = findLanternFishPopulation(initialReproductionSchedule, 80);
+        return fromNumber(population);
     }
 
     @Override
     public Optional<String> solvePart2() {
-        var timeUntilReproduction = Arrays.stream(asList().iterator().next().split(",")).map(Integer::valueOf).toList();
+        long population = findLanternFishPopulation(initialReproductionSchedule, 256);
+        return fromNumber(population);
+    }
+
+    private List<Integer> findInitialReproductionSchedule() {
+        if (initialReproductionSchedule == null) {
+            return asStream().flatMap(s -> Arrays.stream(s.split(","))).map(Integer::valueOf).toList();
+        } else {
+            return initialReproductionSchedule;
+        }
+    }
+
+    @Override
+    protected void init() {
+        this.initialReproductionSchedule = findInitialReproductionSchedule();
+    }
+
+    private long findLanternFishPopulation(List<Integer> initialReproductionSchedule, int iterations) {
         long[] frequencyArray = new long[9];
 
-        for (Integer time : timeUntilReproduction) {
-            frequencyArray[time] += 1;
+        for (Integer internalTimer : initialReproductionSchedule) {
+            frequencyArray[internalTimer] += 1;
         }
 
-        for (int i = 0; i < 256; i++) {
-            frequencyArray = nextDay(frequencyArray);
+        for (int i = 0; i < iterations; i++) {
+            updateFrequency(frequencyArray);
         }
 
-        return fromNumber(Arrays.stream(frequencyArray).sum());
+        return Arrays.stream(frequencyArray).sum();
     }
+
 
     /**
      * Shifts all frequencies to the left, representing a day has passed.
@@ -67,7 +61,7 @@ public class Day6 extends AdventOfCodeSolver {
      * @param frequencyArray: Frequency array ranging from index 0 to 8 representing the time left in days until a fish can reproduce
      * @return frequencyArray after a day has passed
      */
-    private long[] nextDay(long[] frequencyArray) {
+    private void updateFrequency(long[] frequencyArray) {
         // save and zero out when timer hits 0
         var newFishCount = frequencyArray[0];
 
@@ -77,7 +71,7 @@ public class Day6 extends AdventOfCodeSolver {
 
         frequencyArray[6] += newFishCount;
         frequencyArray[8] = newFishCount;
-        return frequencyArray;
+
     }
 
     public static void main(String[] args) {

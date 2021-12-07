@@ -26,6 +26,8 @@ public abstract class AdventOfCodeSolver {
         }
     }
 
+    protected void init() {}
+
     protected List<String> asList() {
         return input;
     }
@@ -61,6 +63,7 @@ public abstract class AdventOfCodeSolver {
     public void solve(Path inputPath) {
 
         loadInput(inputPath);
+        init();
 
         System.out.println("------------------------------------");
         System.out.println("Running part 1");
